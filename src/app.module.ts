@@ -38,10 +38,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ProductModule } from './product/product.module';
-import { StoreModule } from './store/store.module';
-import { ReviewModule } from './review/review.module';
 import { CategoryModule } from './category/category.module';
-import { CouponModule } from './coupon/coupon.module';
 
 @Module({
   imports: [
@@ -59,10 +56,7 @@ import { CouponModule } from './coupon/coupon.module';
     }),
     AuthModule,
     ProductModule,
-    StoreModule,
-    ReviewModule,
     CategoryModule,
-    CouponModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -7,11 +7,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-
-  
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-
-
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true, 
@@ -26,8 +22,8 @@ async function bootstrap() {
   });
 
   const config = new DocumentBuilder()
-    .setTitle('ecommerce API')
-    .setDescription('API documentation for the Ecommerce application')
+    .setTitle('E-Commerce Inventory API')
+    .setDescription('API documentation for the E-Commerce Inventory API')
     .setVersion('1.0')
     .addTag('ecommerce')
     .addBearerAuth()
