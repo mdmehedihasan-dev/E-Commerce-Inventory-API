@@ -25,7 +25,7 @@ async function bootstrap() {
     .setTitle('E-Commerce Inventory API')
     .setDescription('API documentation for the E-Commerce Inventory API')
     .setVersion('1.0')
-    .addTag('ecommerce')
+    .addTag('ecommerce inventory')
     .addBearerAuth()
     .build();
 

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 import { Category } from './catagory.entity';
 
@@ -24,14 +24,10 @@ export class Product {
   productImageUrl: string; 
 
 
-  @ManyToOne(() => User, (user) => user.id)  // =user er
+  @ManyToOne(() => User, (user) => user.id)  
   vendor: User;
 
-
-
-
-
-  @ManyToOne(() => Category, (category) => category.product)  //= Category
+  @ManyToOne(() => Category, (category) => category.product)  
   catagory: Category;
 
 

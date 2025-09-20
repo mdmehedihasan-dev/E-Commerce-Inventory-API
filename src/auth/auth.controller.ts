@@ -6,7 +6,7 @@ import { RefreshTokenDto } from './dto/refreshToken.dto';
 import { JwtAuthGuard } from '../jwt-auth.guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-@ApiTags('ecommerce')
+@ApiTags('ecommerce inventory')
 @Controller('api/auth')
 export class AuthController { 
   constructor(private authService: AuthService) {}
