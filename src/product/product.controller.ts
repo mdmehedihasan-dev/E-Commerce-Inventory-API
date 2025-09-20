@@ -1,22 +1,38 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards,    UploadedFile, UseInterceptors, Request, Req } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags,  ApiConsumes, ApiBody } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+  UploadedFile,
+  UseInterceptors,
+  Request,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiConsumes,
+  ApiBody,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { JwtAuthGuard } from 'src/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ParseIntPipe } from '@nestjs/common';
-
-
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-
 @ApiTags('product')
-@Controller('product')
+@Controller('api/product')
 export class ProductController {
-
-  constructor(private  readonly productService: ProductService) {}
+  constructor(private readonly productService: ProductService) {}
 
   @Post('create')
   @UseGuards(JwtAuthGuard)
@@ -25,7 +41,8 @@ export class ProductController {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
         },
@@ -50,37 +67,55 @@ export class ProductController {
   })
   @ApiOperation({ summary: 'Create a new product with image' })
   @ApiResponse({ status: 201, description: 'Product created successfully.' })
-  async createProduct(@UploadedFile() file: Express.Multer.File,@Body() createProductDto: CreateProductDto, @Request() req:any) {
-
+  async createProduct(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createProductDto: CreateProductDto,
+    @Request() req: any,
+  ) {
     const imagePath = file ? `uploads/${file.filename}` : null;
     const userId = req.user.id;
 
-   return this.productService.createProduct(userId,createProductDto,imagePath ?? undefined  );
+    return this.productService.createProduct(
+      userId,
+      createProductDto,
+      imagePath ?? undefined,
+    );
   }
 
-   @Get('getById/:id')
-   @UseGuards(JwtAuthGuard)
-   @ApiBearerAuth()
-   @ApiOperation({ summary: 'Get all products' })
-   @ApiResponse({ status: 200, description: 'Products retrieved successfully.' })
-   @ApiResponse({ status: 401, description: 'Unauthorized.' })
-   @ApiResponse({ status: 404, description: 'Not Found.' })
-    async getProductById(@Param('id') id: number,@Request() req: any) {
+  @Get('getById/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get product by ID' })
+  @ApiResponse({ status: 200, description: 'Product retrieved successfully.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 404, description: 'Not Found.' })
+  async getProductById(@Param('id') id: number, @Request() req: any) {
     const userId = req.user.id;
-    console.log(userId)
-         return this.productService.getProductById(id,userId);
-   }
+    return this.productService.getProductById(id, userId);
+  }
 
   @Get('getAll')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get all products' })
+  @ApiOperation({ summary: 'Get all products with filters' })
   @ApiResponse({ status: 200, description: 'Products retrieved successfully.' })
   @ApiResponse({ status: 401, description: 'Unauthorized.' })
-  async getAllProducts(@Request() req: any) {
-      const userId = req.user.id;
-      console.log(userId)
-      return this.productService.getAllProduct(userId);
+  @ApiQuery({ name: 'categoryId', required: false, type: Number })
+  @ApiQuery({ name: 'storeId', required: false, type: Number })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  async getAllProducts(
+    @Request() req: any,
+    @Query()
+    query: {
+      categoryId?: number;
+      storeId?: number;
+      page?: number;
+      limit?: number;
+    },
+  ) {
+    const userId = req.user.id;
+    return this.productService.getAllProduct(userId, query);
   }
 
   @Put('update/:id')
@@ -90,7 +125,8 @@ export class ProductController {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           const ext = extname(file.originalname);
           cb(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
         },
@@ -108,7 +144,7 @@ export class ProductController {
         stock: { type: 'number', example: 5 },
         image: {
           type: 'string',
-          format: 'binary',      
+          format: 'binary',
         },
       },
     },
@@ -122,26 +158,29 @@ export class ProductController {
   async updateProduct(
     @Param('id') id: number,
     @UploadedFile() file: Express.Multer.File,
-    @Body() UpdateProductDto: UpdateProductDto,
-    @Request() req: any
+    @Body() updateProductDto: UpdateProductDto,
+    @Request() req: any,
   ) {
     const imagePath = file ? `uploads/${file.filename}` : undefined;
     const userId = req.user.id;
-    return this.productService.updateProduct(id, UpdateProductDto,userId, imagePath);
+    return this.productService.updateProduct(
+      id,
+      updateProductDto,
+      userId,
+      imagePath,
+    );
   }
 
-    @Delete('delete/:id')
-    @UseGuards(JwtAuthGuard)  
-    @ApiBearerAuth()
-    @ApiOperation({ summary: 'Delete a product' })
-    @ApiResponse({ status: 200, description: 'Product deleted successfully.' })
-    @ApiResponse({ status: 400, description: 'Bad Request.' })
-    @ApiResponse({ status: 401, description: 'Unauthorized.' })
-    @ApiResponse({ status: 404, description: 'Not Found.' })
-    async deleteProduct(@Param('id') id: number, @Request() req: any) {
-        const userId = req.user.id;
-        return this.productService.deleteProduct(id, userId);
-    }
+  @Delete('delete/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Delete a product' })
+  @ApiResponse({ status: 200, description: 'Product deleted successfully.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @ApiResponse({ status: 401, description: 'Unauthorized.' })
+  @ApiResponse({ status: 404, description: 'Not Found.' })
+  async deleteProduct(@Param('id') id: number, @Request() req: any) {
+    const userId = req.user.id;
+    return this.productService.deleteProduct(id, userId);
+  }
 }
-
-

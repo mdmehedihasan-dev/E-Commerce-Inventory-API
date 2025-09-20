@@ -5,12 +5,9 @@ import { JwtAuthGuard } from 'src/jwt-auth.guard';
 import { CreateCategoryDto } from './dto/create-category.dto';
 
 @ApiTags('category')
-@Controller('category')
-export class CategoryController {
-
-    
+@Controller('api/category')
+export class CategoryController {    
     constructor(private readonly categoryService:CategoryService){}
-
     @Post('createcategory')
     @UseGuards(JwtAuthGuard)
     @ApiBearerAuth() 

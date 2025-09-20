@@ -91,28 +91,53 @@ export class ProductService {
     return product;
   }
 
-  /*===================  get All Products  Start   =====================*/
-  async getAllProduct(
-    userId: number,
-  ): Promise<{ message: string; products?: Product[] }> {
-    const products = await this.productRepository.find({
-      where: {
-        vendor: {
-          id: userId,
-        },
-      },
-      relations: ['vendor'],
-    });
 
-    if (products.length === 0) {
-      return { message: 'NO Product Found' };
-    }
+/*===================  Get All Products (with filters & pagination)  =====================*/
+async getAllProduct(
+  userId: number,
+  query: {
+    categoryId?: number;
+    minPrice?: number;
+    maxPrice?: number;
+    page?: number;
+    limit?: number;
+  },
+): Promise<{ message: string; products?: Product[]; total?: number }> {
+  const { categoryId, minPrice, maxPrice, page = 1, limit = 10 } = query;
 
-    return {
-      message: 'Products retrieved successfully',
-      products: products,
-    };
+  const qb = this.productRepository
+    .createQueryBuilder('product')
+    .leftJoinAndSelect('product.vendor', 'vendor')
+    .leftJoinAndSelect('product.catagory', 'catagory')
+    .where('vendor.id = :userId', { userId });
+
+  if (categoryId) {
+    qb.andWhere('catagory.id = :categoryId', { categoryId });
   }
+
+  if (minPrice) {
+    qb.andWhere('product.price >= :minPrice', { minPrice });
+  }
+
+  if (maxPrice) {
+    qb.andWhere('product.price <= :maxPrice', { maxPrice });
+  }
+
+  qb.skip((page - 1) * limit).take(limit);
+
+  const [products, total] = await qb.getManyAndCount();
+
+  if (products.length === 0) {
+    return { message: 'No products found' };
+  }
+
+  return {
+    message: 'Products retrieved successfully',
+    products,
+    total,
+  };
+}
+
 
   /*===================  Update A Single Product  Start   =====================*/
   async updateProduct(
