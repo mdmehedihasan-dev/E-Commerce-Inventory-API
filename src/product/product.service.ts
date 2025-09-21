@@ -92,7 +92,7 @@ export class ProductService {
   }
 
 
-/*===================  Get All Products (with filters & pagination)  =====================*/
+// ===================  Get All Products (with filters & pagination)  =====================
 async getAllProduct(
   userId: number,
   query: {
@@ -139,7 +139,7 @@ async getAllProduct(
 }
 
 
-  /*===================  Update A Single Product  Start   =====================*/
+  // ===================  Update A Single Product  Start   =====================
   async updateProduct(
     id: number,
     updateProductDto: UpdateProductDto,
@@ -161,7 +161,7 @@ async getAllProduct(
       );
     }
 
-    // Check if categoryId is provided
+    // ======================== Check if categoryId is provided =============================
     if (updateProductDto.categoryId) {
       const category = await this.categoryRepository.findOne({
         where: { id: updateProductDto.categoryId, ownerId: userId },
@@ -183,7 +183,7 @@ async getAllProduct(
     return this.productRepository.save(product);
   }
 
-  /*===================  Delete A Single Product   =====================*/
+  // ===================  Delete A Single Product   =====================
   async deleteProduct(
     id: number,
     userId: number,

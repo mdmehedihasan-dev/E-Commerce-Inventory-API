@@ -21,78 +21,141 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# E-Commerce Inventory API
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A RESTful API built with [NestJS](https://nestjs.com/) and TypeORM for managing products, categories, and user authentication in an e-commerce inventory system.
 
-## Project setup
+## Features
 
-```bash
-$ npm install
+- **User Authentication**: Register, login, JWT-based authentication, and refresh tokens.
+- **Product Management**: CRUD operations for products, including image upload and filtering.
+- **Category Management**: CRUD operations for product categories, with ownership checks.
+- **Role-based Access**: Restricts access to resources based on user roles.
+- **API Documentation**: Swagger UI available for easy API exploration.
+- **PostgreSQL Database**: Uses PostgreSQL for data persistence.
+- **File Uploads**: Supports product image uploads.
+
+## Project Structure
+
+```
+src/
+  ├── app.controller.ts
+  ├── app.module.ts
+  ├── app.service.ts
+  ├── jwt-auth.guard.ts
+  ├── main.ts
+  ├── auth/
+  ├── category/
+  ├── entity/
+  └── product/
+uploads/
+test/
 ```
 
-## Compile and run the project
+## Getting Started
 
-```bash
-# development
-$ npm run start
+### Prerequisites
 
-# watch mode
-$ npm run start:dev
+- Node.js (v18+ recommended)
+- npm
+- PostgreSQL database
 
-# production mode
-$ npm run start:prod
+### Installation
+
+1. **Clone the repository:**
+   ```sh
+   git clone <your-repo-url>
+   cd E-Commerce-Inventory-API
+   ```
+
+2. **Install dependencies:**
+   ```sh
+   npm install
+   ```
+
+3. **Configure environment variables:**
+
+   Edit the `.env` file with your PostgreSQL credentials:
+   ```
+   DB_HOST=your-db-host
+   DB_PORT=your-db-port
+   DB_USER=your-db-user
+   DB_PASS=your-db-password
+   DB_NAME=your-db-name
+   ```
+
+### Running the Application
+
+- **Development:**
+  ```sh
+  npm run start:dev
+  ```
+
+- **Production:**
+  ```sh
+  npm run build
+  npm run start:prod
+  ```
+
+### Running Tests
+
+- **Unit tests:**
+  ```sh
+  npm run test
+  ```
+
+- **E2E tests:**
+  ```sh
+  npm run test:e2e
+  ```
+
+- **Test coverage:**
+  ```sh
+  npm run test:cov
+  ```
+
+## API Documentation
+
+After starting the server, access the Swagger UI at:
+
+```
+http://localhost:3000/api
 ```
 
-## Run tests
+This provides interactive documentation for all endpoints, request/response schemas, and authentication requirements.
 
-```bash
-# unit tests
-$ npm run test
+## Endpoints Overview
 
-# e2e tests
-$ npm run test:e2e
+- **Auth:** `/api/auth`
+  - `POST /register` — Register a new user
+  - `POST /login` — Login and receive JWT tokens
+  - `POST /refresh` — Refresh access token
+  - `GET /profile` — Get current user profile (JWT required)
 
-# test coverage
-$ npm run test:cov
-```
+- **Products:** `/api/products`
+  - `POST /` — Create product (JWT required, supports image upload)
+  - `GET /` — List products (JWT required, supports filtering & pagination)
+  - `GET /:id` — Get product by ID (JWT required)
+  - `PUT /:id` — Update product (JWT required, supports image upload)
+  - `DELETE /:id` — Delete product (JWT required)
 
-## Deployment
+- **Categories:** `/api/categories`
+  - `POST /` — Create category (JWT required)
+  - `GET /` — List categories (JWT required)
+  - `GET /:id` — Get category by ID (JWT required)
+  - `PUT /:id` — Update category (JWT required)
+  - `DELETE /:id` — Delete category (JWT required)
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## File Uploads
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Product images are uploaded to the `/uploads` directory and served statically at `/uploads/<filename>`.
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT
+
+---
+
+**Author:** Mehedi Hasan
+
+For questions or support, please open an issue or contact the maintainer.

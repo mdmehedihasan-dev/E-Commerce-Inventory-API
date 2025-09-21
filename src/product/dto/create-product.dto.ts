@@ -24,11 +24,6 @@ export class CreateProductDto {
   @Min(0)
   productStock: number;
 
-//   @ApiProperty({ description: 'Store ID where product belongs', example: 1 })
-//   @IsNumber()
-//   @IsNotEmpty()
-//   storeId: number;
-
   @ApiProperty({ description: 'Category ID of the product', example: 1 })
   @IsNumber()
   @IsNotEmpty()

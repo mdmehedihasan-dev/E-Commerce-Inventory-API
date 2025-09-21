@@ -10,8 +10,6 @@ export class CategoryService {
   constructor(
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
-    // @InjectRepository(Product)
-    // private readonly userRepository: Repository<User>,
   ) {}
 
   async createCategory(createCategoryDto: CreateCategoryDto, ownerId: number): Promise<Category> {

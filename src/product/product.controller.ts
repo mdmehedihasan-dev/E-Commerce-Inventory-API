@@ -30,11 +30,11 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 
 @ApiTags('Products')
-@Controller('api/products') // Use plural form to match REST standards
+@Controller('api/products') 
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  /** Create Product */
+  // ==================== Create Product =====================
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(
@@ -76,7 +76,7 @@ export class ProductController {
     return this.productService.createProduct(userId, createProductDto, imagePath);
   }
 
-  /** Get All Products with filters & pagination */
+  // ================================ Get All Products with filters & pagination ==========================
   @Get()
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -100,7 +100,7 @@ export class ProductController {
     return this.productService.getAllProduct(userId, query);
   }
 
-  /** Get single Product by ID */
+  // ================================= Get single Product by ID ==============================
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
@@ -110,7 +110,7 @@ export class ProductController {
     return this.productService.getProductById(id, userId);
   }
 
-  /** Update Product */
+//  ==================================== Update Product ============================ 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(
@@ -152,7 +152,7 @@ export class ProductController {
     return this.productService.updateProduct(id, updateProductDto, userId, imagePath);
   }
 
-  /** Delete Product */
+  // ============================================ Delete Product =======================================
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
