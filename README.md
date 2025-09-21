@@ -156,6 +156,6 @@ MIT
 
 ---
 
-**Author:** Mehedi Hasan
+**Author:** Md Mehedi Hasan
 
 For questions or support, please open an issue or contact the maintainer.
