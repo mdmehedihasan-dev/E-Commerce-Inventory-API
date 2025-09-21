@@ -118,11 +118,8 @@ test/
 
 After starting the server, access the Swagger UI at:
 
-```
-http://localhost:3000/api
-```
-
-This provides interactive documentation for all endpoints, request/response schemas, and authentication requirements.
+- **Local:** `http://localhost:3000/api`
+- **Live (Deployed):** [https://e-commerce-inventory-api.onrender.com/api](https://e-commerce-inventory-api.onrender.com/api)
 
 ## Endpoints Overview
 
