@@ -41,7 +41,7 @@ export class ProductService {
 
     // find category owned by user
     const category = await this.categoryRepository.findOne({
-      where: { id: categoryId, ownerId: userId },
+      where: { id: categoryId },
     });
 
     if (!category) {

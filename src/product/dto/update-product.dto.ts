@@ -16,8 +16,8 @@ export class UpdateProductDto {
   @ApiProperty({ description: 'Product Price', example: 150 })
   @IsOptional()
   @IsNumber()
-  @IsPositive() // Ensures the price is a positive number
-  @Min(0) // Accepts 0 and above
+  @IsPositive() 
+  @Min(0) 
   productPrice?: number;
 
   @ApiProperty({ description: 'Product Stock', example: 50 })
@@ -26,13 +26,6 @@ export class UpdateProductDto {
   @IsPositive()
   @Min(0)
   productStock?: number;
-
-
-  @ApiProperty({description: 'Store ID', example: 1})
-  @IsOptional()
-  @IsNotEmpty()
-  @IsNumber()
-  storeId?: number;
 
 
   @ApiProperty({ description: 'Store ID', example: 1 })
